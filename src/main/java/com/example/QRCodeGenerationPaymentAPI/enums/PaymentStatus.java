@@ -1,0 +1,10 @@
+package com.example.QRCodeGenerationPaymentAPI.enums;
+
+public enum PaymentStatus {
+
+    PENDING,
+    PROCESSING,
+    COMPLETED,
+    FAILED
+}
+
