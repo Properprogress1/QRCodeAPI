@@ -1,9 +1,11 @@
 package com.example.QRCodeGenerationPaymentAPI.model;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+
 @Data
+@Entity
 @Table(name = "merchant_balances")
 public class MerchantBalance {
     @Id

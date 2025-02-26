@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories("com.example.QRCodeGenerationPaymentAPI.repository")
+//@EnableJpaRepositories("com.example.QRCodeGenerationPaymentAPI.repository")
 public class QrCodeGenerationPaymentApiApplication {
 
 	public static void main(String[] args) {
