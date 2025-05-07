@@ -26,8 +26,13 @@ public class Transaction {
     private String merchantId;
     private String userId;
     private String description;
+    private boolean refunded;
+
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public void setRefunded(boolean b) {
+    }
 }

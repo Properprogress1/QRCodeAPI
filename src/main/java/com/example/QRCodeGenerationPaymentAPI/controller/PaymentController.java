@@ -28,6 +28,15 @@ public class PaymentController {
         PaymentResponseDto response = paymentService.processPayment(transactionId);
         return ResponseEntity.ok(new ApiResponse<>("success", "Payment processed successfully", response));
     }
+
+    @GetMapping("/status/{transactionId}")
+    public ResponseEntity<ApiResponse<PaymentResponseDto>> getPaymentStatus(
+            @PathVariable String transactionId) {
+        PaymentResponseDto response = paymentService.getPaymentStatus(transactionId);
+        return ResponseEntity.ok(new ApiResponse<>("success", "Payment status retrieved", response));
+    }
+
+
 }
 
 
