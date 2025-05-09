@@ -22,5 +22,10 @@ public class PaymentRequestDto {
 
     private String description;
 
+    private String userId;
+
+
+
+
 }
 

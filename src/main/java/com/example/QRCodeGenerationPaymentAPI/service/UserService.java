@@ -16,4 +16,7 @@ public interface UserService {
    UserDto updateUserProfile(UserDto updatedUser);
 
    UserDetails loadUserByUsername(String email);
+
+   UserDto enableTwoFactor(String userId, String PhoneNumber);
+
 }

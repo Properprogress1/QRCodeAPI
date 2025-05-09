@@ -22,6 +22,16 @@ public class PaymentController {
         return ResponseEntity.ok(new ApiResponse<>("success", "QR Code generated successfully", response));
     }
 
+    @PostMapping("/transactions/{transactionId}/pay")
+    public ResponseEntity<ApiResponse<PaymentResponseDto>> processPayment(
+            @PathVariable String transactionId,
+            @RequestParam(required = false) String otp // optional if not needed
+    ) {
+        PaymentResponseDto response = paymentService.processPayment(transactionId, otp);
+        return ResponseEntity.ok(new ApiResponse<>("success", "Payment processed", response));
+    }
+
+
     @PostMapping("/process/{transactionId}")
     public ResponseEntity<ApiResponse<PaymentResponseDto>> processPayment(
             @PathVariable String transactionId) {

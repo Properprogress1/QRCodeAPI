@@ -3,6 +3,7 @@ package com.example.QRCodeGenerationPaymentAPI.serviceImpl;
 import com.example.QRCodeGenerationPaymentAPI.dto.*;
 import com.example.QRCodeGenerationPaymentAPI.model.User;
 import com.example.QRCodeGenerationPaymentAPI.repository.UserRepository;
+import com.example.QRCodeGenerationPaymentAPI.service.OtpService;
 import com.example.QRCodeGenerationPaymentAPI.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final OtpService otpService;
 
     @Override
     public UserDto registerUser(UserRegistrationDto request) {
@@ -65,12 +67,26 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+
+    @Override
+    public UserDto enableTwoFactor(String userId, String phoneNumber) {
+        UserDto userDto = otpService.generateOtp(userId, phoneNumber);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        user.setTwoFactorEnabled(true);
+        userRepository.save(user);
+
+        return new UserDto(user.getId(), user.getEmail(), user.getPhoneNum(), true); // ✅ fixed method name
+    }
+
+
+
     @Override
     public UserDto getUserProfile(String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
-        return new UserDto(user.getId(), user.getName(), user.getEmail());
+        return new UserDto(user.getId(),user.getName(),user.getEmail());
     }
 
     @Override

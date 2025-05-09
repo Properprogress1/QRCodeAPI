@@ -14,4 +14,5 @@ public class PaymentResponseDto {
     private String status;
     private Double userBalance;
     private Double merchantBalance;
+    private String userId;
 }

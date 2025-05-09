@@ -30,6 +30,8 @@ public class Transaction {
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -65,19 +67,61 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<TransactionDto> getTransactions(String userId, String merchantId, PaymentStatus status) {
+        return null;
+    }
+
+    @Override
+    public List<TransactionDto> getTransactions(String userId, String merchantId, PaymentStatus status, String startDate,String endDate) {
         List<Transaction> transactions = transactionRepository.findAll(); // You should filter based on inputs
 
         // Filter the transactions if needed
         return transactions.stream()
-                .filter(t -> (userId == null || userId.equals(t.getUserId())) &&
-                        (merchantId == null || merchantId.equals(t.getMerchantId())) &&
-                        (status == null || status.equals(t.getStatus())))
+                .filter(t ->
+                        (userId == null || userId.equals(t.getUserId())) &&
+                                (merchantId == null || merchantId.equals(t.getMerchantId())) &&
+                                (status == null || status.equals(t.getStatus())) &&
+                                (startDate == null || startDate.equals(t.getStartDate())) &&
+                                (endDate == null || endDate.equals(t.getEndDate()))
+                )
                 .map(t -> new TransactionDto(
                         t.getId(),
                         t.getAmount(),
                         t.getCurrency()
                 ))
                 .toList();
+
+    }
+    @Override
+    public byte[] exportTransactionsReport(String userId, String merchantId, LocalDateTime startDate, LocalDateTime endDate) {
+        List<Transaction> transactions = getTransactions(userId, merchantId, null, startDate, endDate);
+        // Use a library like Apache POI or iText to generate CSV/PDF
+        return generateCsvReport(transactions);
+    }
+    private byte[] generateCsvReport(List<Transaction> transactions) {
+        StringBuilder csvBuilder = new StringBuilder();
+
+        // Add CSV header
+        csvBuilder.append("Transaction ID,User ID,Merchant ID,Amount,Currency,Status,Start Date,End Date\n");
+
+        // Add CSV rows
+        for (Transaction t : transactions) {
+            csvBuilder.append(t.getId()).append(",");
+            csvBuilder.append(t.getUserId()).append(",");
+            csvBuilder.append(t.getMerchantId()).append(",");
+            csvBuilder.append(t.getAmount()).append(",");
+            csvBuilder.append(t.getCurrency()).append(",");
+            csvBuilder.append(t.getStatus()).append(",");
+            csvBuilder.append(t.getStartDate()).append(",");
+            csvBuilder.append(t.getEndDate()).append("\n");
+        }
+
+        // Convert StringBuilder to byte array
+        return csvBuilder.toString().getBytes(StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public List<Transaction> getTransactions(String userId, String merchantId, PaymentStatus status, LocalDateTime startDate, LocalDateTime endDate) {
+        return transactionRepository.findByFilters(userId, merchantId, status, startDate, endDate);
     }
 
 

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,10 +19,13 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     private String id;
+    private String otp;
+    private Instant otpExpiry;
     private String password;
     private String userId;
     private String name;
     private Double balance;
+    private boolean TwoFactorEnabled;
     private String phoneNum;
     private String email;
     private String description;
